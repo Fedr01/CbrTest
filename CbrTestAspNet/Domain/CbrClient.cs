@@ -13,6 +13,12 @@ namespace CbrTestAspNet.Domain
         private DailyRate _dailyRateCache;
         private DateTime? _lastResponseTimeStamp;
         private int _lifeTimeInMinutes = 1;
+        private readonly HttpClient _httpClient;
+
+        public CbrClient()
+        {
+            _httpClient = new HttpClient();
+        }
 
         public async Task<DailyRate> GetDailyRateAsync()
         {
@@ -30,9 +36,7 @@ namespace CbrTestAspNet.Domain
 
         private async Task<DailyRate> GetDailyRateFromResponseAsync()
         {
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetStringAsync(Endpoint);
-
+            var response = await _httpClient.GetStringAsync(Endpoint);
             return JsonConvert.DeserializeObject<DailyRate>(response);
         }
     }
