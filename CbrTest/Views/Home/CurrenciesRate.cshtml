@@ -1,0 +1,28 @@
+﻿@model IEnumerable<CurrencyViewModel>
+@{
+    ViewData["Title"] = "Currencies rate";
+    var selectedCurrency = "";
+   
+}
+<h2>Курсы валют ЦБ РФ на @ViewData["Date"]</h2>
+
+<div class="form-group">
+
+    <div class="col-md-5">
+        @Html.DropDownListFor(x => selectedCurrency, new SelectList(Model, "Name", "Name"), new {@class = "form-control", id = "currency-dropdown"})
+        <label id="rate"></label>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var currencies = @Html.Raw(Json.Serialize(Model));
+
+        $('#currency-dropdown').change(function () {
+            var selectedCurrency = $("#currency-dropdown").val();
+            var currency = currencies.filter(c => c.name === selectedCurrency)[0];
+
+            $("#rate").html(currency.nominal + " " + currency.name + " = " + currency.value + " руб.");
+        });
+    </script>
+}
