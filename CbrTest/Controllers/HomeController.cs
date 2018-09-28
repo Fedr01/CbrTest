@@ -23,17 +23,11 @@ namespace CbrTest.Controllers
             return View();
         }
 
-        public async Task<IActionResult>  CurrenciesRate()
+        public async Task<IActionResult> CurrenciesRate()
         {
             var dailyRate = await _cbrClient.GetDailyRateAsync();
             ViewData["Date"] = dailyRate.TimeStamp.ToString("d");
             return View(dailyRate.Currencies.Select(CurrencyViewModel.Create));
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
